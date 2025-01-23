@@ -1,34 +1,6 @@
 import React from "react"; 
 import ReactDOM from "react-dom/client" 
 import "./index.css";
- 
-function App() { 
-    return (
-        <div className="container">
-            <Header/>
-            <Menu/>
-            <Footer/>
-        </div>
-    );  
-} 
-
-function Header() {
-    return <h1 style={{ color: "black", fontSize: "48px" , textTransform:"uppercase" }}>Shannon's Pizza Co.</h1>
-}
-
-
-function Pizza({name, ingredients, price, image}) {
-    return (
-        <div className="pizza">
-            <img src={image} alt={name}/>
-            <h1>{name}</h1>
-            <p>{ingredients}</p>
-            <p>${price}</p>
-        </div>
-        
-    );
-}
-
 
 const pizzaData = [
     {
@@ -69,6 +41,36 @@ const pizzaData = [
     },
 ]
 
+ 
+function App() { 
+    return (
+        <div className="container">
+            <Header/>
+            <Menu/>
+            <Footer/>
+        </div>
+    );  
+} 
+
+function Header() {
+    return <h1 style={{ color: "black", fontSize: "48px" , textTransform:"uppercase" }}>Shannon's Pizza Co.</h1>
+}
+
+
+function Pizza({name, ingredients, price, image}) {
+    return (
+        <div className="pizza">
+            <img src={image} alt={name}/>
+            <h1>{name}</h1>
+            <p>{ingredients}</p>
+            <p>${price}</p>
+        </div>
+        
+    );
+}
+
+
+
 const clickAlert = () => {
     alert("Order Submitted!");
   };
@@ -80,8 +82,6 @@ function Footer() {
 
 
   return (
-    <div>
-      {isOpen && <h1></h1>}
       
       <footer>
         {isOpen ? (
@@ -93,19 +93,33 @@ function Footer() {
           <h1>Sorry, we're closed</h1>
         )}
       </footer>
-    </div>
   );
 };
 
 
+
+
+
 function Menu() {
+    const [searchTerm, setSearchTerm] = React.useState("");
+    const filteredPizzas = pizzaData.filter((pizzaData) =>  pizzaData.name.toLowerCase().includes(searchTerm));
+    const handleSearchChange = (e) => setSearchTerm(e.target.value.toLowerCase());
+
+
     return (
         <div className="menu">
             <h2>Our Menu</h2>
-            <p className="tagline ">Authentic Italian Cuisine, all from our stone oven</p>
+            <input
+              type="text"
+              placeholder="Search pizzas..."
+              value={searchTerm}
+              onChange={handleSearchChange}
+              className="search-input"
+            />
             <div className="pizzas">
-                {pizzaData.map((pizza, index) => (
-                    <Pizza key={index} 
+                {filteredPizzas.map((pizza, index) => (
+                    <Pizza 
+                    key={index} 
                     name={pizza.name} 
                     ingredients={pizza.ingredients} 
                     price={pizza.price} 
